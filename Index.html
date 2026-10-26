@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="NEXORA AI brings useful AI-powered tools for writing, business, creativity and productivity into one place.">
+  <title>NEXORA AI — One Platform, Many Possibilities</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #080d18;
+      color: #f5f7ff;
+    }
+    header {
+      padding: 20px;
+      border-bottom: 1px solid #202b40;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .logo { font-size: 23px; font-weight: bold; color: #70a7ff; }
+    .badge {
+      color: #a8c8ff;
+      background: #172640;
+      padding: 8px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+    }
+    main { max-width: 1050px; margin: auto; padding: 35px 18px; }
+    .hero { text-align: center; padding: 35px 0; }
+    .hero h1 { font-size: clamp(34px, 7vw, 58px); margin: 10px 0; }
+    .hero h1 span { color: #70a7ff; }
+    .hero p { color: #aab5cb; line-height: 1.7; max-width: 620px; margin: 15px auto; }
+    .search {
+      width: 100%; max-width: 580px; padding: 16px;
+      border: 1px solid #34435f; border-radius: 12px;
+      background: #111a2a; color: white; font-size: 16px;
+    }
+    h2 { margin-top: 35px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px; margin-top: 20px;
+    }
+    .card {
+      background: #111a2a; border: 1px solid #24324a;
+      padding: 22px; border-radius: 16px;
+    }
+    .icon { font-size: 28px; }
+    .card p { color: #aab5cb; line-height: 1.6; }
+    .card button, .primary {
+      border: 0; border-radius: 9px; padding: 12px 16px;
+      background: #3979ee; color: white; font-weight: bold;
+      cursor: pointer;
+    }
+    .card button { width: 100%; }
+    .card button:hover, .primary:hover { background: #245fd0; }
+    #toolArea {
+      display: none; margin-top: 25px; padding: 20px;
+      border-radius: 15px; background: #111a2a;
+      border: 1px solid #34435f;
+    }
+    textarea {
+      display: block; width: 100%; min-height: 130px;
+      margin: 14px 0; padding: 14px; border-radius: 10px;
+      background: #080d18; color: white; border: 1px solid #34435f;
+      font: inherit;
+    }
+    #result { white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.7; }
+    footer { text-align: center; padding: 30px 15px; color: #8997af; }
+    .note { font-size: 12px; color: #8997af; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">✦ NEXORA AI</div>
+    <div class="badge">AI TOOLS WORKSPACE</div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="badge">YOUR CREATIVE WORKSPACE</div>
+      <h1>One Platform.<br><span>Many Possibilities.</span></h1>
+      <p>Explore useful tools for writing, ecommerce and social media.
+         Start with a task and turn your ideas into practical content.</p>
+      <input id="search" class="search" placeholder="Search tools..." aria-label="Search tools">
+    </section>
+
+    <h2>Explore AI Tools</h2>
+    <p style="color:#aab5cb">Choose a tool to get started.</p>
+
+    <section class="grid" id="tools">
+      <article class="card" data-name="text rewriter">
+        <div class="icon">✍️</div>
+        <h3>Text Rewriter</h3>
+        <p>Improve and rewrite text using simple writing rules.</p>
+        <button onclick="openTool('rewrite')">Open Tool</button>
+      </article>
+      <article class="card" data-name="product description">
+        <div class="icon">🛍️</div>
+        <h3>Product Description</h3>
+        <p>Create a basic product description draft for your store.</p>
+        <button onclick="openTool('product')">Open Tool</button>
+      </article>
+      <article class="card" data-name="social media caption">
+        <div class="icon">📱</div>
+        <h3>Social Media Caption</h3>
+        <p>Draft a caption for a social media post.</p>
+        <button onclick="openTool('caption')">Open Tool</button>
+      </article>
+    </section>
+
+    <section id="toolArea">
+      <h2 id="toolTitle">Your Tool</h2>
+      <label for="inputText">Enter your text or product details:</label>
+      <textarea id="inputText" placeholder="Type here..."></textarea>
+      <button class="primary" onclick="generate()">Generate Draft</button>
+      <p class="note">This first version uses local templates, not a real AI model.</p>
+      <h3>Result</h3>
+      <div id="result"></div>
+    </section>
+  </main>
+
+  <footer>© 2026 NEXORA AI · Built for useful work</footer>
+
+  <script>
+    let currentTool = "rewrite";
+
+    function openTool(type) {
+      currentTool = type;
+      const titles = {
+        rewrite: "Text Rewriter",
+        product: "Product Description Generator",
+        caption: "Social Media Caption Generator"
+      };
+      document.getElementById("toolTitle").textContent = titles[type];
+      document.getElementById("toolArea").style.display = "block";
+      document.getElementById("result").textContent = "";
+      document.getElementById("toolArea").scrollIntoView({ behavior: "smooth" });
+    }
+
+    function generate() {
+      const input = document.getElementById("inputText").value.trim();
+      const result = document.getElementById("result");
+      if (!input) {
+        result.textContent = "Please enter some text first.";
+        return;
+      }
+
+      let output;
+      if (currentTool === "rewrite") {
+        output = input.charAt(0).toUpperCase() + input.slice(1);
+        if (!/[.!?]$/.test(output)) output += ".";
+        output += "\n\nBasic formatting draft — review it before using.";
+      } else if (currentTool === "product") {
+        output = "Product: " + input +
+          "\n\nDiscover a product designed to fit your needs." +
+          "\n\nHighlights:\n• Practical design\n• Everyday usability\n• A thoughtful option for your needs" +
+          "\n\nPlease replace these generic points with verified product details before publishing.";
+      } else {
+        output = input +
+          "\n\nMake it yours ✨\n\n#NewPost #ExploreMore";
+      }
+
+      result.textContent = output;
+    }
+
+    document.getElementById("search").addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      document.querySelectorAll(".card").forEach(card => {
+        card.style.display = card.dataset.name.includes(query) ? "" : "none";
+      });
+    });
+  </script>
+</body>
+</html>
